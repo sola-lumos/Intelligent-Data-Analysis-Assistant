@@ -1,0 +1,19 @@
+/backend/.venv/
+/frontend/node_modules/
+__pycache__/
+*.pyc
+.Python
+
+# 环境与密钥：勿提交含真实 API Key 的文件（允许提交的示例见 *.env.example）
+backend/.env
+.env
+.env.local
+*.pem
+
+# 本地 SQLite 数据库勿提交
+*.db
+*.sqlite
+*.sqlite3
+
+.DS_Store
+

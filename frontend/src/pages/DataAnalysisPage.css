@@ -1,0 +1,889 @@
+/* 数据分析主布局：左侧会话列表 | 中间可视化 | 右侧聊天 */
+
+
+.das-root {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.das-sidebar-col {
+  flex-shrink: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.das-sidebar-col .das-sidebar {
+  flex: 1;
+  min-height: 0;
+}
+
+.das-split {
+  flex-shrink: 0;
+  border: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  background: #cbd5e1;
+  transition: background 0.15s ease;
+}
+
+.das-split-col {
+  width: 6px;
+  cursor: col-resize;
+  align-self: stretch;
+}
+
+.das-split-row {
+  height: 6px;
+  width: 100%;
+  cursor: row-resize;
+}
+
+.das-split:hover,
+.das-split.is-active {
+  background: #93c5fd;
+}
+
+.das-split:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+.das-main-col {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.das-chart-pane {
+  flex: 1;
+  min-width: 280px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.das-chart-shell {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.das-chart-shell .das-chart-panel {
+  flex: 1;
+  min-height: 0;
+}
+
+.das-split-mid-chat {
+  width: 6px;
+  min-width: 6px;
+  flex-shrink: 0;
+  cursor: col-resize;
+  align-self: stretch;
+}
+
+.das-chat-pane-col {
+  flex-shrink: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f8fafc;
+  border-left: 1px solid #cbd5e1;
+  box-shadow: -8px 0 28px rgba(15, 23, 42, 0.04);
+}
+
+.das-chat-shell {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.das-chat-shell .das-chat-panel {
+  flex: 1;
+  min-height: 0;
+}
+
+/* —— 左侧 —— */
+.das-sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: #0f172a;
+  color: #e2e8f0;
+  border-right: 1px solid #1e293b;
+}
+
+.das-sidebar-head {
+  padding: 1rem;
+  flex-shrink: 0;
+}
+
+.das-brand {
+  margin: 0 0 0.85rem;
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.das-btn-new {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: #f8fafc;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.das-btn-new:hover {
+  background: #334155;
+}
+
+.das-session-nav {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 0.5rem 0.75rem;
+}
+
+.das-session-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.das-session-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.das-session-item {
+  min-width: 0;
+  width: 100%;
+  text-align: left;
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.das-session-item:hover {
+  background: rgba(148, 163, 184, 0.12);
+}
+
+.das-session-row.is-active .das-session-item {
+  background: #2563eb;
+  color: #fff;
+}
+
+.das-session-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  word-break: break-word;
+  line-height: 1.35;
+  white-space: normal;
+}
+
+.das-session-edit-form {
+  min-width: 0;
+  display: flex;
+  align-items: stretch;
+}
+
+.das-session-input {
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+  padding: 0.4rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: #f8fafc;
+  font-size: 0.875rem;
+  font-family: inherit;
+}
+
+.das-session-row.is-active .das-session-input {
+  background: #1d4ed8;
+  border-color: #93c5fd;
+  color: #fff;
+}
+
+.das-session-actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 1px;
+}
+
+.das-session-rename {
+  flex-shrink: 0;
+  width: 1.65rem;
+  height: 1.65rem;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.das-session-rename:hover {
+  background: rgba(148, 163, 184, 0.15);
+  color: #e2e8f0;
+}
+
+.das-session-row.is-active .das-session-rename {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.das-session-row.is-active .das-session-rename:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.das-session-del {
+  flex-shrink: 0;
+  width: 1.65rem;
+  height: 1.65rem;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.das-session-del:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+.das-session-row.is-active .das-session-del:hover {
+  background: rgba(254, 202, 202, 0.25);
+  color: #fecaca;
+}
+
+.das-chart-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: #eef2ff;
+}
+
+.das-chart-panel > .das-panel-head {
+  background: linear-gradient(#f8faff, #e8eeff);
+  border-bottom-color: #c7d2fe;
+}
+
+.das-chat-panel {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 0;
+  background: #f8fafc;
+}
+
+.das-chat-panel.has-banner {
+  grid-template-rows: auto auto 1fr auto;
+}
+
+.das-panel-head {
+  flex-shrink: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(#fff, #f8fafc);
+}
+
+.das-chat-head {
+  border-color: #e2e8f0;
+}
+
+.das-chat-error-banner {
+  margin: 0 1rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #7f1d1d;
+  background: rgba(254, 226, 226, 0.92);
+  border: 1px solid rgba(252, 165, 165, 0.9);
+}
+
+.das-panel-title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+}
+
+.das-chart-sub {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.das-chart-sub.muted {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.das-chart-panel-head {
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+}
+
+.das-chart-head-left {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.das-chart-meta {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.das-chart-meta.muted {
+  color: #94a3b8;
+}
+
+.das-view-switch {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 3px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+  gap: 2px;
+}
+
+.das-view-switch-btn {
+  padding: 0.32rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #475569;
+  cursor: pointer;
+}
+
+.das-view-switch-btn:hover:not(:disabled) {
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.das-view-switch-btn.is-active {
+  background: #fff;
+  color: #1d4ed8;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+.das-view-switch-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.das-chart-insight {
+  flex-shrink: 0;
+  margin: 0 0.65rem 0.45rem;
+  padding: 0.55rem 0.72rem;
+  border-radius: 10px;
+  border: 1px solid rgba(129, 140, 248, 0.45);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+/* 置于图表/表格主体下方，与主内容区用顶边分隔 */
+.das-chart-insight-below {
+  margin: 0.35rem 0.65rem 0.65rem;
+  border-top: 1px solid #c7d2fe;
+  border-radius: 0 0 10px 10px;
+  padding: 0.65rem 1rem 0.75rem;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  box-shadow: none;
+  background: linear-gradient(180deg, rgba(248, 250, 255, 0.95), rgba(238, 242, 255, 0.88));
+}
+
+.das-chart-insight-placeholder {
+  color: #64748b;
+  font-size: 0.8125rem;
+}
+
+.das-chart-insight-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.4rem;
+}
+
+.das-chart-insight-btn {
+  flex-shrink: 0;
+  padding: 0.28rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid #6366f1;
+  background: #eef2ff;
+  color: #3730a3;
+  cursor: pointer;
+}
+
+.das-chart-insight-btn:hover:not(:disabled) {
+  background: #e0e7ff;
+}
+
+.das-chart-insight-btn:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.das-chart-insight-label {
+  display: inline-block;
+  margin-bottom: 0;
+  padding: 0.12rem 0.42rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #3730a3;
+  border-radius: 5px;
+  background: rgba(99, 102, 241, 0.12);
+}
+
+.das-chart-insight-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.52;
+  color: #334155;
+}
+
+.das-chart-body {
+  flex: 1;
+  min-height: 0;
+  padding: 0.65rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.das-echarts-host {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* echarts-for-react 外层 div，随容器铺满可视化区 */
+.das-echarts-host > div {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.das-chart-pending {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.35rem 1rem;
+  min-height: 200px;
+}
+
+.das-chart-pending-inner {
+  max-width: 26rem;
+}
+
+.das-chart-pending-lead {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.das-chart-pending-inner .muted {
+  color: #64748b;
+  line-height: 1.55;
+  font-size: 0.84rem;
+}
+
+.das-chat-messages {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.85rem 1rem;
+}
+
+.das-chat-foot {
+  flex-shrink: 0;
+  border-top: 1px solid #e2e8f0;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.das-chat-samples {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+.das-chat-samples-sum {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.5rem 1rem 0.35rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.das-chat-samples-sum::-webkit-details-marker {
+  display: none;
+}
+
+.das-chat-samples-hint {
+  display: inline;
+  margin-left: 0.35rem;
+  font-weight: 400;
+  font-size: 0.72rem;
+  color: #94a3b8;
+}
+
+.das-chat-samples-body {
+  max-height: 11.5rem;
+  overflow-y: auto;
+  padding: 0 1rem 0.5rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.das-chat-sample-block + .das-chat-sample-block {
+  margin-top: 0.65rem;
+}
+
+.das-chat-sample-cat {
+  font-size: 0.72rem;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin-bottom: 0.38rem;
+}
+
+.das-chat-sample-chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.das-chat-sample-chips > li {
+  margin: 0;
+  padding: 0;
+}
+
+.das-chat-sample-chip {
+  margin: 0;
+  padding: 0.32rem 0.55rem;
+  max-width: 100%;
+  text-align: left;
+  border: 1px solid #dbeafe;
+  border-radius: 999px;
+  background: linear-gradient(#f8fafc, #f1f5f9);
+  color: #1e40af;
+  font-size: 0.74rem;
+  line-height: 1.35;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.das-chat-sample-chip:hover:not(:disabled) {
+  border-color: #93c5fd;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.das-chat-sample-chip:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.das-chat-input-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.55rem;
+  align-items: stretch;
+  padding: 0.65rem 1rem 1rem;
+  background: #fff;
+}
+
+.das-chart-empty {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #64748b;
+}
+
+.das-chart-empty .muted {
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.das-chart-stack {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.das-chart-note {
+  flex-shrink: 0;
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.das-mini-table-wrap {
+  height: 100%;
+  overflow: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.das-mini-table-wrap.is-compact {
+  margin-top: 0.65rem;
+  max-height: 11rem;
+}
+
+.das-mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.das-mini-table th,
+.das-mini-table td {
+  padding: 0.35rem 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.das-mini-table th {
+  background: #f8fafc;
+  font-weight: 600;
+}
+
+.das-bubble-wrap {
+  display: flex;
+  margin-bottom: 0.75rem;
+}
+
+.das-bubble-wrap.user {
+  justify-content: flex-end;
+}
+
+.das-bubble-wrap.ai {
+  justify-content: flex-start;
+}
+
+.das-bubble {
+  max-width: min(90%, 40rem);
+  border-radius: 12px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.9rem;
+}
+
+.das-bubble.user {
+  background: #2563eb;
+  color: #fff;
+}
+
+.das-bubble.ai {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  max-width: min(92%, 46rem);
+}
+
+.das-bubble.ai .das-bubble-content {
+  line-height: 1.55;
+}
+
+.das-assistant-plain {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.das-sql-block {
+  margin-top: 0.55rem;
+  font-size: 0.78rem;
+  color: #475569;
+}
+
+.das-sql-block summary {
+  cursor: pointer;
+  user-select: none;
+}
+
+.das-sql-block pre {
+  margin: 0.35rem 0 0;
+  padding: 0.5rem;
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+.das-textarea {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  resize: none;
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font: inherit;
+  outline: none;
+}
+
+.das-textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.das-send {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.75rem;
+  flex-shrink: 0;
+  padding: 0.55rem 1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  cursor: pointer;
+}
+
+.das-send:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.das-send:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.das-empty,
+.das-empty-chat {
+  padding: 0.85rem;
+  margin: 0;
+  font-size: 0.875rem;
+  color: #94a3b8;
+  text-align: center;
+}
+
+/* 小屏：侧栏置顶，主区内自上而下「可视化 → 聊天」 */
+@media (max-width: 720px) {
+  .das-root {
+    flex-direction: column;
+  }
+
+  .das-sidebar-col {
+    width: 100% !important;
+    max-height: 40vh;
+    flex-shrink: 0;
+  }
+
+  .das-split {
+    display: none;
+  }
+
+  .das-main-col {
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .das-chart-pane {
+    min-width: 0;
+    flex: 1;
+    min-height: 160px;
+    max-height: 46vh;
+  }
+
+  .das-chart-shell {
+    flex: 1;
+    min-height: 140px;
+  }
+
+  .das-chat-pane-col {
+    width: 100% !important;
+    min-width: 0;
+    flex: 1;
+    border-left: none;
+    border-top: 1px solid #cbd5e1;
+    box-shadow: none;
+    min-height: 200px;
+  }
+
+  .das-chat-shell {
+    flex: 1;
+    min-height: 180px;
+  }
+}
