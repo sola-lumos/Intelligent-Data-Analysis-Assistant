@@ -4,13 +4,6 @@
 
 详细设计见 [docs/智能数据分析系统-模块规划.md](docs/智能数据分析系统-模块规划.md)。
 
-## 安全与密钥（上传 GitHub 前必读）
-
-- **切勿**将真实的 `DASHSCOPE_API_KEY` 写入仓库：不要提交 `backend/.env`，不要使用假密钥占位以外的真实值。
-- 本地配置：`cp backend/.env.example backend/.env`，仅在 **`backend/.env`** 中填写密钥（该路径已在根目录 `.gitignore` 中忽略）。
-- 若密钥曾出现在共享副本、截图或未忽略的提交中，请到 [阿里云百炼控制台](https://dashscope.console.aliyun.com/) **删除或轮换** API Key。
-- 仓库内允许提交的只有 **`backend/.env.example`**、**`frontend/.env.example`**（不含密钥）。
-
 ## 技术栈
 
 | 层级 | 技术 |
